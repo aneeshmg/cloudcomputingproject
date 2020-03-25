@@ -46,7 +46,7 @@ def generate_results(results_file):
 
 def get_result(video):
     result_file = video_repo_directory + video + '.txt'
-    subprocess.call(["./run-darknet.sh", video])
+    subprocess.check_output(["/home/ubuntu/cloudcomputingproject/phase-1/run-darknet.sh", video])
 
     result = generate_results(result_file)
 
