@@ -26,9 +26,9 @@ def put_messages(n):
         print('Uploading ' + video_name)
         response = queue.send_message(
             MessageBody=video_name,
-            MessageGroupId='messageGroup1'
+            MessageGroupId='messageGroup2'
         )
-        upload_to_s3('./video.h264', 'ccp1inputs', video_name)
+        # upload_to_s3('./video.h264', 'ccp1inputs', video_name)
 
         print(response)
 
