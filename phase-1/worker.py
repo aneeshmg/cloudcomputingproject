@@ -15,10 +15,10 @@ def download_s3(bucket, object_name, local_name):
 def upload_to_s3(result, bucket, object_name):
     s3_client = boto3.client('s3')
 
-    with open('/home/ubuntu/temp/' + object_name, 'w+') as f:
+    with open(video_repo_directory + object_name + '.txt', 'w+') as f:
         f.write(result)
 
-    response = s3_client.upload_file('/home/ubuntu/temp/' + object_name, bucket, object_name)
+    response = s3_client.upload_file(video_repo_directory + object_name + '.txt', bucket, object_name)
     print(response)
     return True
 
@@ -46,7 +46,7 @@ def generate_results(results_file):
 
 def get_result(video):
     result_file = video_repo_directory + video + '.txt'
-    subprocess.check_output(["/home/ubuntu/cloudcomputingproject/phase-1/run-darknet.sh", video])
+    os.system("bash /home/ubuntu/cloudcomputingproject/phase-1/run-darknet.sh "+ video)
 
     result = generate_results(result_file)
 
