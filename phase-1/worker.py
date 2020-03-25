@@ -15,10 +15,10 @@ def download_s3(bucket, object_name, local_name):
 def upload_to_s3(result, bucket, object_name):
     s3_client = boto3.client('s3')
 
-    with open('./temp/' + object_name, 'w+') as f:
+    with open('/home/ubuntu/temp/' + object_name, 'w+') as f:
         f.write(result)
 
-    response = s3_client.upload_file('./temp/' + object_name, bucket, object_name)
+    response = s3_client.upload_file('/home/ubuntu/temp/' + object_name, bucket, object_name)
     print(response)
     return True
 
