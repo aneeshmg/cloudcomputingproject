@@ -46,7 +46,7 @@ def generate_results(results_file):
 
 def get_result(video):
     result_file = video_repo_directory + video + '.txt'
-    command = '/home/ubuntu/darknet/darknet detector demo cfg/coco.data cfg/yolov3-tiny.cfg yolov3-tiny.weights video.h264 > ' + result_file
+    command = '/home/ubuntu/darknet/darknet detector demo /home/ubuntu/darknet/cfg/coco.data /home/ubuntu/darknet/cfg/yolov3-tiny.cfg /home/ubuntu/darknet/yolov3-tiny.weights ' + video_repo_directory + video + ' > ' + result_file
     os.system(command)
 
     result = generate_results(result_file)
