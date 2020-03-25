@@ -28,7 +28,7 @@ def put_messages(n):
             MessageBody=video_name,
             MessageGroupId='messageGroup1'
         )
-        upload_to_s3('./video.h264', 'ccp1inputs', video_name)
+        # upload_to_s3('./video.h264', 'ccp1inputs', video_name)
 
         print(response)
 
