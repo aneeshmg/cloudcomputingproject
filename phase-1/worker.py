@@ -46,7 +46,7 @@ def generate_results(results_file):
 
 def get_result(video):
     result_file = video_repo_directory + video + '.txt'
-    subprocess.call(["./darknet", "detector", "demo", "cfg/coco.data", "cfg/yolov3-tiny.cfg", "yolov3-tiny.weights", video_repo_directory + video, ">", result_file])
+    subprocess.call(["./run-darknet.sh", video])
 
     result = generate_results(result_file)
 
