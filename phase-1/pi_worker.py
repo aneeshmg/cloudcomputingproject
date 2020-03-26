@@ -69,14 +69,17 @@ while True:
     # upload results
     # cleanup
     print("Pi Worker started...")
-    video_name = sorted(os.listdir())[0]
-    print("About to process " + video_name)
+    videos_list = sorted(os.listdir())
+    time.sleep(1)
+    if len(videos_list) > 0:
+        video_name = videos_list[0]
+        print("About to process " + video_name)
 
-    os.rename(video_repo_directory + video_name, temp_video_directory + video_name)
+        os.rename(video_repo_directory + video_name, temp_video_directory + video_name)
 
-    result = get_result(video_name)
+        result = get_result(video_name)
 
-    upload_result_to_s3(result, 'ccp1outputs', video_name)
-    upload_video_to_s3(temp_video_directory + video_name, 'ccp1inputs', video_name)
+        upload_result_to_s3(result, 'ccp1outputs', video_name)
+        upload_video_to_s3(temp_video_directory + video_name, 'ccp1inputs', video_name)
 
-    clean_up(video_name)
+        clean_up(video_name)
