@@ -7,6 +7,8 @@ from botocore.exceptions import ClientError
 import subprocess
 
 video_repo_directory = '/home/ubuntu/videos/'
+sqs_client = boto3.resource('sqs')
+queue = sqs_client.get_queue_by_name(QueueName='ccp1queue.fifo')
 
 def download_s3(bucket, object_name, local_name):
     s3 = boto3.resource('s3')
@@ -15,10 +17,10 @@ def download_s3(bucket, object_name, local_name):
 def upload_to_s3(result, bucket, object_name):
     s3_client = boto3.client('s3')
 
-    with open('/home/ubuntu/temp/' + object_name, 'w+') as f:
+    with open(video_repo_directory + object_name + '.txt', 'w+') as f:
         f.write(result)
 
-    response = s3_client.upload_file('/home/ubuntu/temp/' + object_name, bucket, object_name)
+    response = s3_client.upload_file(video_repo_directory + object_name + '.txt', bucket, object_name)
     print(response)
     return True
 
@@ -43,22 +45,19 @@ def generate_results(results_file):
 
     return str(results_map)
 
-
 def get_result(video):
     result_file = video_repo_directory + video + '.txt'
-    subprocess.call(["./darknet", "detector", "demo", "cfg/coco.data", "cfg/yolov3-tiny.cfg", "yolov3-tiny.weights", video_repo_directory + video, ">", result_file])
+    os.system("bash /home/ubuntu/cloudcomputingproject/phase-1/run-darknet.sh "+ video)
 
     result = generate_results(result_file)
 
     return result
 
 def clean_up(video):
+    os.remove(video_repo_directory + video)
+    os.remove(video_repo_directory + video + '.txt')
     return True
 
-sqs_client = boto3.resource('sqs')
-queue = sqs_client.get_queue_by_name(QueueName='ccp1queue.fifo')
-
-# print(queue.attributes['ApproximateNumberOfMessages'])
 
 while True:
     for message in queue.receive_messages():
@@ -74,5 +73,5 @@ while True:
 
         # Let the queue know that the message is processed
         message.delete()
-        time.sleep(1)
-        print(queue.attributes['ApproximateNumberOfMessages'])
+        clean_up(video_name)
+        print("Pending in queue" + queue.attributes['ApproximateNumberOfMessages'])

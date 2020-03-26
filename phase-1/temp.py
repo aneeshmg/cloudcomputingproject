@@ -32,7 +32,7 @@ def put_messages(n):
 
         print(response)
 
-put_messages(10)
+put_messages(1)
 
 time.sleep(2)
 
