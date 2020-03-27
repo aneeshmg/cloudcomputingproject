@@ -69,7 +69,7 @@ while True:
     # upload results
     # cleanup
     print("Pi Worker started...")
-    videos_list = sorted(os.listdir())
+    videos_list = sorted(os.listdir(video_repo_directory))
     time.sleep(1)
     if len(videos_list) > 0:
         video_name = videos_list[0]
