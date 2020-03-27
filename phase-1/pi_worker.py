@@ -59,7 +59,6 @@ def get_result(video):
 def clean_up(video):
     os.remove(temp_video_directory + video)
     os.remove(temp_video_directory + video + '.txt')
-    os.remove(video_repo_directory + video)
     return True
 
 i = 0
