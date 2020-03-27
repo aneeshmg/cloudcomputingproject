@@ -4,7 +4,7 @@ import os
 import time
 
 
-video_repo_directory = "/home/pi/video/"
+video_repo_directory = "/home/pi/videos/"
 temp_video_directory = "/home/pi/temp_videos/"
 
 sqs_client = boto3.resource('sqs')
