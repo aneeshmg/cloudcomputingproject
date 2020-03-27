@@ -14,10 +14,10 @@ queue = sqs_client.get_queue_by_name(QueueName='ccp1queue.fifo')
 def upload_result_to_s3(result, bucket, object_name):
     s3_client = boto3.client('s3')
 
-    with open(video_repo_directory + object_name + '.txt', 'w+') as f:
+    with open(temp_video_directory + object_name + '.txt', 'w+') as f:
         f.write(result)
 
-    response = s3_client.upload_file(video_repo_directory + object_name + '.txt', bucket, object_name)
+    response = s3_client.upload_file(temp_video_directory + object_name + '.txt', bucket, object_name)
     print(response)
     return True
 
