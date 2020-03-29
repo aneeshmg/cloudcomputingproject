@@ -28,7 +28,7 @@ def upload_to_s3(result, bucket, object_name):
         f.write(result)
 
     response = s3_client.upload_file(video_repo_directory + object_name + '.txt', bucket, object_name)
-    print(response)
+
     return True
 
 def generate_results(results_file):
@@ -77,7 +77,8 @@ for message in queue.receive_messages():
 
     result = get_result(video_name)
 
-    upload_to_s3(result, 'ccp1outputs', video_name)
+    if result != "{}":
+        upload_to_s3(result, 'ccp1outputs', video_name)
 
     clean_up(video_name)
     print("Pending in queue" + queue.attributes['ApproximateNumberOfMessages'])

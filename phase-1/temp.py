@@ -32,7 +32,7 @@ def put_messages(n):
 
         print(response)
 
-# put_messages(10)
+put_messages(10)
 
 time.sleep(2)
 
@@ -54,17 +54,17 @@ print(queue.attributes['ApproximateNumberOfMessages'])
 # darknet command - ./darknet detector demo cfg/coco.data cfg/yolov3-tiny.cfg yolov3-tiny.weights video.h264
 # os.system('ls')
 
-def get_message():
-    for message in queue.receive_messages():
-        message.delete()
-        return message.body
+# def get_message():
+#     for message in queue.receive_messages():
+#         message.delete()
+#         return message.body
 
-for i in range(5):
-    mess = get_message()
-    print(mess)
-    time.sleep(3.1)
+# for i in range(5):
+#     mess = get_message()
+#     print(mess)
+#     time.sleep(3.1)
 
-time.sleep(15)
+# time.sleep(15)
 
 
 # upload_to_s3('./video.h264', 'ccp1inputs', 'sample-video')
