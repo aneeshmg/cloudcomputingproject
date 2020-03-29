@@ -26,13 +26,13 @@ def put_messages(n):
         print('Uploading ' + video_name)
         response = queue.send_message(
             MessageBody=video_name,
-            MessageGroupId='messageGroup2'
+            MessageGroupId='messageGroup1'
         )
         # upload_to_s3('./video.h264', 'ccp1inputs', video_name)
 
         print(response)
 
-put_messages(1)
+# put_messages(10)
 
 time.sleep(2)
 
@@ -54,7 +54,17 @@ print(queue.attributes['ApproximateNumberOfMessages'])
 # darknet command - ./darknet detector demo cfg/coco.data cfg/yolov3-tiny.cfg yolov3-tiny.weights video.h264
 # os.system('ls')
 
+def get_message():
+    for message in queue.receive_messages():
+        message.delete()
+        return message.body
 
+for i in range(5):
+    mess = get_message()
+    print(mess)
+    time.sleep(3.1)
+
+time.sleep(15)
 
 
 # upload_to_s3('./video.h264', 'ccp1inputs', 'sample-video')

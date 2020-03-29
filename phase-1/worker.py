@@ -4,11 +4,18 @@ import random
 import os
 import time
 from botocore.exceptions import ClientError
-import subprocess
+import requests
 
 video_repo_directory = '/home/ubuntu/videos/'
+
 sqs_client = boto3.resource('sqs')
+ec2 = boto3.resource('ec2')
+
 queue = sqs_client.get_queue_by_name(QueueName='ccp1queue.fifo')
+
+res = requests.get('http://169.254.169.254/latest/meta-data/instance-id')
+ids = []
+ids.append(res.content)
 
 def download_s3(bucket, object_name, local_name):
     s3 = boto3.resource('s3')
@@ -59,19 +66,19 @@ def clean_up(video):
     return True
 
 
-while True:
-    for message in queue.receive_messages():
-        # Print out the body of the message
-        print(message.body)
-        video_name = message.body
 
-        download_s3('ccp1inputs', video_name, video_repo_directory + video_name)
+for message in queue.receive_messages():
+    # Print out the body of the message
+    print("Processing " + message.body)
+    video_name = message.body
+    message.delete()
 
-        result = get_result(video_name)
+    download_s3('ccp1inputs', video_name, video_repo_directory + video_name)
 
-        upload_to_s3(result, 'ccp1outputs', video_name)
+    result = get_result(video_name)
 
-        # Let the queue know that the message is processed
-        message.delete()
-        clean_up(video_name)
-        print("Pending in queue" + queue.attributes['ApproximateNumberOfMessages'])
+    upload_to_s3(result, 'ccp1outputs', video_name)
+
+    clean_up(video_name)
+    print("Pending in queue" + queue.attributes['ApproximateNumberOfMessages'])
+    ec2.instances.filter(InstanceIds = ids).stop()
