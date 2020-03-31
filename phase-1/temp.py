@@ -31,6 +31,7 @@ def put_messages(n):
         # upload_to_s3('./video.h264', 'ccp1inputs', video_name)
 
         print(response)
+        time.sleep(10)
 
 put_messages(10)
 
